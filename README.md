@@ -1,1 +1,1 @@
-# prog3
+# Java repo a prog3 targyhoz
