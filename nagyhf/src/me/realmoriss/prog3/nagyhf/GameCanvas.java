@@ -33,29 +33,25 @@ public class GameCanvas extends JPanel {
 		return new Dimension(canvas_w, canvas_h);
 	}
 
-	public void paintSquare(Vec2D pos, Vec2D size, Color c) {
-		Graphics g = canvas_img.getGraphics();
-		g.setColor(c);
-		g.fillRect(pos.getXi(), pos.getYi(), size.getXi(), size.getYi());
-		g.dispose();
-	}
-
-	public void paintSquare(int x, int y, int w, int h, Color c) {
-		Graphics g = canvas_img.getGraphics();
-		g.setColor(c);
-		g.fillRect(x, y, w, h);
-		g.dispose();
-	}
-
+	/**
+	 * Kirajzol egy GraphicEntity a canvasra, az entity koordinataival
+	 * @param ent a kirajzolni kivant entity
+	 */
 	public void paintEntity(GraphicEntity ent) {
 		Graphics g = canvas_img.getGraphics();
 		g.drawImage(ent.getImg(), ent.getPos().getXi(), ent.getPos().getYi(), null);
 		g.dispose();
 	}
 
-	public void paintImage(Image i, int pos_x, int pos_y) {
+	/**
+	 * Kirajzol egy kepet a canvasra, a megadott pontra
+	 * @param image	a kirajzolni kivant kep
+	 * @param pos_x a kep x koordinataja
+	 * @param pos_y a kep y koordinataja
+	 */
+	public void paintImage(Image image, int pos_x, int pos_y) {
 		Graphics g = canvas_img.getGraphics();
-		g.drawImage(i, pos_x, pos_y, null);
+		g.drawImage(image, pos_x, pos_y, null);
 		g.dispose();
 	}
 
@@ -65,6 +61,9 @@ public class GameCanvas extends JPanel {
 		g.drawImage(canvas_img,0,0,null);
 	}
 
+	/**
+	 * Letorli a canvast feher szinure
+	 */
 	public void clear() {
 		Graphics g = canvas_img.getGraphics();
 		g.setColor(Color.white);
@@ -72,6 +71,10 @@ public class GameCanvas extends JPanel {
 		g.dispose();
 	}
 
+	/**
+	 * Visszaadja a canvast befoglalo dobozt
+	 * @return a befoglalo doboz
+	 */
 	public Rectangle getRect() {
 		return new Rectangle(0, 0, canvas_w, canvas_h);
 	}

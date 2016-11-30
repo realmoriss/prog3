@@ -21,6 +21,12 @@ public class GraphicEntity extends Entity {
 	protected static final int DEF_H = 32;
 	protected Vec2D size;
 
+	/**
+	 * Letrehoz egy GraphicEntityt a megadott parameterekkel
+	 * Az entity texturaja es merete alapertelmezetten DEF_W*DEF_H meretu ciankek kitoltott negyszog
+	 * @param pos  Az entity pozicioja
+	 * @param name Az entity neve
+	 */
 	public GraphicEntity(Vec2D pos, String name) {
 		super(pos, name);
 		classname = DEF_CLASSNAME;
@@ -32,6 +38,13 @@ public class GraphicEntity extends Entity {
 		size = new Vec2D(DEF_W, DEF_H);
 	}
 
+	/**
+	 * Letrehoz egy GraphicEntityt a megadott parameterekkel
+	 * Az entity merete a textura merete lesz
+	 * @param pos  Az entity pozicioja
+	 * @param name Az entity neve
+	 * @param img  Az entity texturaja
+	 */
 	public GraphicEntity(Vec2D pos, String name, BufferedImage img) {
 		super(pos, name);
 		classname = DEF_CLASSNAME;
@@ -39,6 +52,13 @@ public class GraphicEntity extends Entity {
 		size = new Vec2D(img.getWidth(), img.getHeight());
 	}
 
+	/**
+	 * Letrehoz egy GraphicEntityt a megadott parameterekkel
+	 * @param pos  Az entity pozicioja
+	 * @param name Az entity neve
+	 * @param img  Az entity texturaja
+	 * @param size	Az entity merete
+	 */
 	public GraphicEntity(Vec2D pos, String name, BufferedImage img, Vec2D size) {
 		super(pos, name);
 		classname = DEF_CLASSNAME;
@@ -47,6 +67,15 @@ public class GraphicEntity extends Entity {
 		scaleImg(size);
 	}
 
+	/**
+	 * Letrehoz egy GraphicEntityt a megadott parameterekkel
+	 * @param pos_x  Az entity x koordinataja
+	 * @param pos_y  Az entity y koordinataja
+	 * @param name Az entity neve
+	 * @param img  Az entity texturaja
+	 * @param size_x  Az entity szelessege
+	 * @param size_y  Az entity magassaga
+	 */
 	public GraphicEntity(int pos_x, int pos_y, String name, BufferedImage img, int size_x, int size_y) {
 		super(new Vec2D(pos_x, pos_y), name);
 		classname = DEF_CLASSNAME;
@@ -55,6 +84,13 @@ public class GraphicEntity extends Entity {
 		scaleImg(new Vec2D(size_x, size_y));
 	}
 
+	/**
+	 * Letrehoz egy GraphicEntityt a megadott parameterekkel
+	 * Az entity merete a textura merete lesz
+	 * @param pos  Az entity pozicioja
+	 * @param name Az entity neve
+	 * @param filename	A textura fajl eleresi utvonala
+	 */
 	public GraphicEntity(Vec2D pos, String name, String filename) {
 		super(pos, name);
 		classname = DEF_CLASSNAME;
@@ -66,6 +102,13 @@ public class GraphicEntity extends Entity {
 		size = new Vec2D(img.getWidth(), img.getHeight());
 	}
 
+	/**
+	 * Letrehoz egy GraphicEntityt a megadott parameterekkel
+	 * @param pos  Az entity pozicioja
+	 * @param name Az entity neve
+	 * @param filename	A textura fajl eleresi utvonala
+	 * @param size	Az entity merete
+	 */
 	public GraphicEntity(Vec2D pos, String name, String filename, Vec2D size) {
 		super(pos, name);
 		classname = DEF_CLASSNAME;
@@ -78,6 +121,15 @@ public class GraphicEntity extends Entity {
 		scaleImg(size);
 	}
 
+	/**
+	 * Letrehoz egy GraphicEntityt a megadott parameterekkel
+	 * @param pos_x  Az entity x koordinataja
+	 * @param pos_y  Az entity y koordinataja
+	 * @param name Az entity neve
+	 * @param filename	A textura fajl eleresi utvonala
+	 * @param size_x  Az entity szelessege
+	 * @param size_y  Az entity magassaga
+	 */
 	public GraphicEntity(int pos_x, int pos_y, String name, String filename, int size_x, int size_y) {
 		super(new Vec2D(pos_x, pos_y), name);
 		classname = DEF_CLASSNAME;
@@ -90,6 +142,10 @@ public class GraphicEntity extends Entity {
 		scaleImg(new Vec2D(size_x, size_y));
 	}
 
+	/**
+	 * Atmeretezi a texturat a megadott meretre
+	 * @param newSize a kivant meret
+	 */
 	protected void scaleImg(Vec2D newSize) {
 		BufferedImage tmp = new BufferedImage(size.getXi(), size.getYi(), BufferedImage.TYPE_INT_ARGB);
 		AffineTransform at = new AffineTransform();
@@ -102,15 +158,19 @@ public class GraphicEntity extends Entity {
 		return img;
 	}
 
+	/**
+	 * Megadja az entityt befoglalo dobozt
+	 * @return a befoglalo doboz
+	 */
 	public Rectangle getRect() {
 		return new Rectangle(pos.getXi(), pos.getYi(), size.getXi(), size.getYi());
 	}
 
+	/**
+	 * Megadja az entity kozeppontjat
+	 * @return az entity kozeppontja
+	 */
 	public Point getCenterPoint() {
 		return new Point(pos.getXi() + size.getXi()/2, pos.getYi() + size.getYi()/2);
-	}
-
-	public void freeResources() {
-		img.flush();
 	}
 }

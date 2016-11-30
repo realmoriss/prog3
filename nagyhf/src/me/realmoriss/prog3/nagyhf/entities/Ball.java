@@ -2,7 +2,6 @@ package me.realmoriss.prog3.nagyhf.entities;
 
 import javafx.scene.shape.Circle;
 import me.realmoriss.prog3.nagyhf.entities.primitives.Vec2D;
-
 import java.awt.*;
 
 /**
@@ -23,6 +22,11 @@ public class Ball extends GraphicEntity {
 		box = new Circle(pos.getX()-size.getX()/2, pos.getY()-size.getY()/2, size.getX()/2);
 	}
 
+	/**
+	 * @param pos		A labda pozicioja
+	 * @param name      A labda neve
+	 * @param radius    A labda atmeroje
+	 */
 	public Ball(Vec2D pos, String name,  double radius) {
 		super(pos, name, BALL_IMG, new Vec2D(radius*2, radius*2));
 		classname = DEF_CLASSNAME;
@@ -70,6 +74,11 @@ public class Ball extends GraphicEntity {
 		this.speed.add(speed);
 	}
 
+	/**
+	 * Ellenorzi, hogy a megadott Rectangle utkozik-e a labdaval
+	 * @param rect	a vizsgalni kivant Rectangle
+	 * @return		utkozes eseten true
+	 */
 	public boolean doesCollide(Rectangle rect) {
 		return box.intersects(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 	}

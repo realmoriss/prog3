@@ -45,6 +45,10 @@ public class Paddle extends GraphicEntity implements KeyListener {
 		}
 	}
 
+	/**
+	 * Mozgatja az utot
+	 * Meghivasa szukseges minden uj framen
+	 */
 	public void step() {
 		if (isMoving != 0) {
 			setPos(getPos().add(speed * isMoving, 0));

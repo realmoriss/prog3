@@ -8,6 +8,10 @@ import java.util.TimerTask;
 public class GameLoop extends TimerTask {
 	private GameFrame game;
 
+	/**
+	 * Letrehoz egy jatek loopot, ami a megadott GameFrame step metodusat hivja idozitve
+	 * @param gf a vezerelni kivant GameFrame
+	 */
 	public GameLoop(GameFrame gf) {
 		game = gf;
 	}

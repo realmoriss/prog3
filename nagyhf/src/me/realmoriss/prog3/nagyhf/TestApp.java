@@ -13,6 +13,7 @@ public class TestApp {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+			e.printStackTrace();
 		}
 
 		GameFrame gf = new GameFrame();

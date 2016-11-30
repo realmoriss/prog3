@@ -1,12 +1,25 @@
 package me.realmoriss.prog3.nagyhf;
 
+import com.sun.org.apache.bcel.internal.generic.ICONST;
 import me.realmoriss.prog3.nagyhf.entities.*;
 import me.realmoriss.prog3.nagyhf.entities.primitives.Vec2D;
 
+import javax.json.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created on 11/28/16.
@@ -22,6 +35,9 @@ public class GameFrame extends JFrame {
 
 	private int gameState = 0;
 	private GameCanvas canvas;
+
+	private JMenuBar gameMenu;
+
 	private Ball ball;
 	private Paddle paddle;
 	private int score;
@@ -42,12 +58,37 @@ public class GameFrame extends JFrame {
 		canvas = new GameCanvas();
 		this.add(canvas, BorderLayout.CENTER);
 
+		gameMenu = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		JMenuItem exit = new JMenuItem("Exit", KeyEvent.VK_X);
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		fileMenu.add(exit);
+		gameMenu.add(fileMenu);
+		this.add(gameMenu, BorderLayout.NORTH);
+
 		this.pack();
 
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+		try {
+			JsonReader reader = Json.createReader(new FileInputStream("assets/save.json"));
+			JsonObject obj = reader.readObject();
+			highScore = obj.getInt("highscore");
+		} catch (FileNotFoundException | JsonException e) {
+			e.printStackTrace();
+			highScore = 0;
+		}
 	}
 
+	/**
+	 * Lepteti a jatekot a kovetkezo allapotra
+	 */
 	public void step() {
 		if (gameState == 0) {
 			if (!menuInitState()) {
@@ -63,12 +104,55 @@ public class GameFrame extends JFrame {
 			}
 		} else if (gameState == 3) {
 			if (!gameState()) {
+				try {
+					JsonWriter writer = Json.createWriter(new FileOutputStream("assets/save.json"));
+					JsonObject obj = Json.createObjectBuilder().add("highscore", highScore).build();
+					writer.writeObject(obj);
+					writer.close();
+				} catch (FileNotFoundException | JsonException e) {
+					e.printStackTrace();
+				}
 				gameState = 0;
 				System.gc();
 			}
 		}
 	}
 
+	/**
+	 * A menu inicializalasa allapot
+	 * @return	false, ha az allapot tevekenysege veget ert
+	 */
+	private boolean menuInitState() {
+		menu = new GameMenu();
+		this.addKeyListener(menu);
+		background = new GraphicEntity(new Vec2D(0, 0), "Background", "assets/img/background.png");
+		return false;
+	}
+
+	/**
+	 * A menu megjelenitese allapot
+	 * @return	false, ha az allapot tevekenysege veget ert
+	 */
+	private boolean menuState() {
+		canvas.clear();
+		canvas.paintEntity(background);
+
+		BufferedImage menuImg = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = menuImg.getGraphics();
+		g.setColor(Color.white);
+		g.setFont(new Font("Dialog", Font.TRUETYPE_FONT, 12));
+		g.drawString("High Score: " + highScore, 128, 32);
+		g.drawString("Press enter to start" , 110, 240);
+		canvas.paintImage(menuImg, 0, 0);
+
+		canvas.repaint();
+		return menu.isInMenu();
+	}
+
+	/**
+	 * A jatek inicializalasa allapot
+	 * @return	false, ha az allapot tevekenysege veget ert
+	 */
 	private boolean gameInitState() {
 		entList = new ArrayList<>(100);
 		brickList = new ArrayList<>(100);
@@ -138,6 +222,10 @@ public class GameFrame extends JFrame {
 		return false;
 	}
 
+	/**
+	 * A jatek allapot
+	 * @return	false, ha az allapot tevekenysege veget ert
+	 */
 	private boolean gameState() {
 		boolean ballFallen = false;
 		ball.setPos(ball.getPos().add(ball.getSpeed()));
@@ -179,19 +267,24 @@ public class GameFrame extends JFrame {
 			entList.remove(nearestBrick);
 			brickList.remove(nearestBrick);
 			nearestBrick.destroy();
-			if (nearestBrick.getClassname().equals("prop_brick")) {
-				score+=BRICK_SCORE;
-			} else if (nearestBrick.getClassname().equals("prop_brick_green")) {
-				score+=BRICK_GREEN_SCORE;
-			} else if (nearestBrick.getClassname().equals("prop_brick_cyan")) {
-				score+=BRICK_CYAN_SCORE;
-			} else if (nearestBrick.getClassname().equals("prop_brick_red")) {
-				score+=BRICK_RED_SCORE;
-			} else if (nearestBrick.getClassname().equals("prop_brick_yellow")) {
-				score+=BRICK_YELLOW_SCORE;
+			switch (nearestBrick.getClassname()) {
+				case "prop_brick":
+					score += BRICK_SCORE;
+					break;
+				case "prop_brick_green":
+					score += BRICK_GREEN_SCORE;
+					break;
+				case "prop_brick_cyan":
+					score += BRICK_CYAN_SCORE;
+					break;
+				case "prop_brick_red":
+					score += BRICK_RED_SCORE;
+					break;
+				case "prop_brick_yellow":
+					score += BRICK_YELLOW_SCORE;
+					break;
 			}
 			ball.setSpeed(ball.getSpeed().mirrorY());
-			System.out.println("bounce" + i);
 		}
 
 		removeList.clear();
@@ -221,8 +314,6 @@ public class GameFrame extends JFrame {
 		}
 
 		if (ballFallen) {
-			System.out.println("You're Loser");
-			System.out.println("Score: " + score);
 			if (highScore < score) {
 				highScore = score;
 			}
@@ -232,6 +323,10 @@ public class GameFrame extends JFrame {
 		return true;
 	}
 
+	/**
+	 * Megvizsgalja, hogy a labda utkozik-e a fallal
+	 * @return true, ha van utkozes
+	 */
 	public boolean checkBallCollides() {
 		Rectangle topRect = new Rectangle(0, 0, canvas.getWidth(), 16);
 		Rectangle rightRect = new Rectangle(canvas.getWidth()-16, 16, 16, canvas.getHeight()-16);
@@ -258,6 +353,10 @@ public class GameFrame extends JFrame {
 		return bottomCollide;
 	}
 
+	/**
+	 * Megvizsgalja, hogy az uto utkozik-e a fallal
+	 * @return true, ha van utkozes
+	 */
 	private boolean checkPaddleCollides() {
 		Rectangle rightRect = new Rectangle(canvas.getWidth()-16, 16, 16, canvas.getHeight()-16);
 		Rectangle leftRect = new Rectangle(0, 16, 16, canvas.getHeight()-16);
@@ -274,6 +373,10 @@ public class GameFrame extends JFrame {
 		return false;
 	}
 
+	/**
+	 * Megvizsgalja, hogy a labda utkozik-e az utovel
+	 * @return true, ha van utkozes
+	 */
 	private boolean ballHitsPaddle() {
 		if (ball.doesCollide(paddle.getRect())) {
 			Rectangle is = paddle.getRect().intersection(ball.getRect());
@@ -281,34 +384,8 @@ public class GameFrame extends JFrame {
 			Vec2D ballSpeed = ball.getSpeed();
 			ballSpeed.setX(-dist/10);
 			ballSpeed.mirrorY();
+			ball.setPos(ball.getPos().getX(), paddle.getPos().getY()-ball.getRect().getHeight());
 			ball.setSpeed(ballSpeed);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private boolean menuInitState() {
-		menu = new GameMenu();
-		this.addKeyListener(menu);
-		background = new GraphicEntity(new Vec2D(0, 0), "Background", "assets/img/background.png");
-		return false;
-	}
-
-	private boolean menuState() {
-		canvas.clear();
-		canvas.paintEntity(background);
-
-		BufferedImage menuImg = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = menuImg.getGraphics();
-		g.setColor(Color.white);
-		g.setFont(new Font("Dialog", Font.TRUETYPE_FONT, 12));
-		g.drawString("High Score: " + highScore, 128, 32);
-		g.drawString("Press enter to start" , 110, 240);
-		canvas.paintImage(menuImg, 0, 0);
-
-		canvas.repaint();
-		if (menu.isInMenu()) {
 			return true;
 		} else {
 			return false;
