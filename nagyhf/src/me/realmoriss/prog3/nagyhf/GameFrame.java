@@ -138,11 +138,13 @@ public class GameFrame extends JFrame {
 		canvas.paintEntity(background);
 
 		BufferedImage menuImg = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = menuImg.getGraphics();
+		Graphics2D g = (Graphics2D) menuImg.getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setColor(Color.white);
-		g.setFont(new Font("Dialog", Font.TRUETYPE_FONT, 12));
-		g.drawString("High Score: " + highScore, 128, 32);
-		g.drawString("Press enter to start" , 110, 240);
+		g.setFont(new Font("Dialog", Font.BOLD, 14));
+
+		g.drawString("High Score: " + highScore, 172, 32);
+		g.drawString("Press enter to start" , 96, 240);
 		canvas.paintImage(menuImg, 0, 0);
 
 		canvas.repaint();
@@ -295,11 +297,12 @@ public class GameFrame extends JFrame {
 		}
 
 		BufferedImage menuImg = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = menuImg.getGraphics();
+		Graphics2D g = (Graphics2D) menuImg.getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setColor(Color.white);
-		g.setFont(new Font("Dialog", Font.TRUETYPE_FONT, 12));
+		g.setFont(new Font("Dialog", Font.BOLD, 14));
 		g.drawString("Score: " + score, 32, 32);
-		g.drawString("High Score: " + highScore, 128, 32);
+		g.drawString("High Score: " + highScore, 172, 32);
 		canvas.paintImage(menuImg, 0, 0);
 
 		canvas.repaint();
