@@ -24,7 +24,7 @@ public class GraphicEntity extends Entity {
 	public GraphicEntity(Vec2D pos, String name) {
 		super(pos, name);
 		classname = DEF_CLASSNAME;
-		img = new BufferedImage(DEF_W, DEF_H, BufferedImage.TYPE_INT_RGB);
+		img = new BufferedImage(DEF_W, DEF_H, BufferedImage.TYPE_INT_ARGB);
 		Graphics img_g = img.getGraphics();
 		img_g.setColor(Color.cyan);
 		img_g.fillRect(0, 0, img.getWidth(), img.getHeight());
@@ -104,6 +104,10 @@ public class GraphicEntity extends Entity {
 
 	public Rectangle getRect() {
 		return new Rectangle(pos.getXi(), pos.getYi(), size.getXi(), size.getYi());
+	}
+
+	public Point getCenterPoint() {
+		return new Point(pos.getXi() + size.getXi()/2, pos.getYi() + size.getYi()/2);
 	}
 
 	public void freeResources() {

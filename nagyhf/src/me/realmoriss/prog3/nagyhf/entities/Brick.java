@@ -6,11 +6,17 @@ import me.realmoriss.prog3.nagyhf.entities.primitives.Vec2D;
  */
 public class Brick extends GraphicEntity {
 	private static final String DEF_CLASSNAME = "prop_brick";
-	private static final String BRICK_IMG = "assets/img/brick.png";
+	private static final String BRICK_IMG = "assets/img/brick";
+	private static final String IMG_EXT = ".png";
 	protected boolean destroyed = false;
 
 	public Brick(Vec2D pos, String name) {
-		super(pos, name, BRICK_IMG);
+		super(pos, name, BRICK_IMG+IMG_EXT);
+		classname = DEF_CLASSNAME;
+	}
+
+	public Brick(Vec2D pos, String name, String color) {
+		super(pos, name, BRICK_IMG+"_"+color+IMG_EXT);
 		classname = DEF_CLASSNAME;
 	}
 

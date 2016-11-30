@@ -21,7 +21,7 @@ public class GameCanvas extends JPanel {
 		super();
 		canvas_w = DEF_W;
 		canvas_h = DEF_H;
-		canvas_img = new BufferedImage(DEF_W, DEF_H, BufferedImage.TYPE_INT_RGB);
+		canvas_img = new BufferedImage(DEF_W, DEF_H, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = canvas_img.getGraphics();
 		g.setColor(Color.white);
 		g.fillRect(0, 0, canvas_w, canvas_h);
@@ -50,6 +50,12 @@ public class GameCanvas extends JPanel {
 	public void paintEntity(GraphicEntity ent) {
 		Graphics g = canvas_img.getGraphics();
 		g.drawImage(ent.getImg(), ent.getPos().getXi(), ent.getPos().getYi(), null);
+		g.dispose();
+	}
+
+	public void paintImage(Image i, int pos_x, int pos_y) {
+		Graphics g = canvas_img.getGraphics();
+		g.drawImage(i, pos_x, pos_y, null);
 		g.dispose();
 	}
 

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="nagyhf:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/nagyhf_jar</output-path>
+    <root id="archive" name="nagyhf.jar">
+      <element id="module-output" name="nagyhf" />
+    </root>
+  </artifact>
+</component>
