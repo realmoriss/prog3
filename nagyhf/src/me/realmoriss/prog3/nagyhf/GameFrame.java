@@ -3,7 +3,6 @@ package me.realmoriss.prog3.nagyhf;
 import me.realmoriss.prog3.nagyhf.entities.Ball;
 import me.realmoriss.prog3.nagyhf.entities.Brick;
 import me.realmoriss.prog3.nagyhf.entities.GraphicEntity;
-import me.realmoriss.prog3.nagyhf.entities.Macska;
 import me.realmoriss.prog3.nagyhf.entities.primitives.Vec2D;
 
 import javax.swing.*;

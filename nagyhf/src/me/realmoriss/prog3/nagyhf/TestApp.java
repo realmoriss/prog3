@@ -1,11 +1,7 @@
 package me.realmoriss.prog3.nagyhf;
 
-import me.realmoriss.prog3.nagyhf.entities.Macska;
-import me.realmoriss.prog3.nagyhf.entities.primitives.Vec2D;
-
 import javax.swing.*;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created on 11/28/16.

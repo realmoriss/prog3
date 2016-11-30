@@ -1,6 +1,5 @@
 package me.realmoriss.prog3.nagyhf.entities;
 
-import me.realmoriss.prog3.nagyhf.entities.primitives.Entity;
 import me.realmoriss.prog3.nagyhf.entities.primitives.Vec2D;
 
 /**
